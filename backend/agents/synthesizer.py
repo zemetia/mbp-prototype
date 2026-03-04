@@ -1,14 +1,16 @@
 import os
 import json
 from typing import List, Dict, Any, Optional
-from openai import AsyncOpenAI
+from langchain_openai import ChatOpenAI
+from langchain.schema import SystemMessage, HumanMessage
 
-client = AsyncOpenAI(
+# Kimi 2.5 via Moonshot AI using LangChain
+llm = ChatOpenAI(
+    model="kimi-k2.5",
     api_key=os.getenv("MOONSHOT_API_KEY"),
-    base_url="https://api.moonshot.cn/v1"
+    base_url="https://api.moonshot.cn/v1",
+    temperature=0.4
 )
-
-MODEL = "kimi-k2.5"
 
 class SynthesizerAgent:
     """Agent 6: Generate final structural profile"""
@@ -94,16 +96,11 @@ Generate comprehensive profile dalam Bahasa Indonesia untuk core_summary.
 """
         
         try:
-            response = await client.chat.completions.create(
-                model=MODEL,
-                messages=[
-                    {"role": "system", "content": self.SYSTEM_PROMPT},
-                    {"role": "user", "content": prompt}
-                ],
-                response_format={"type": "json_object"},
-                temperature=0.4
-            )
-            result = json.loads(response.choices[0].message.content)
+            response = await llm.ainvoke([
+                SystemMessage(content=self.SYSTEM_PROMPT),
+                HumanMessage(content=prompt)
+            ])
+            result = json.loads(response.content)
             
             # Ensure core_summary exists
             if not result.get("core_summary"):

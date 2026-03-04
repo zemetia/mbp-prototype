@@ -1,14 +1,16 @@
 import os
 import json
 from typing import List, Dict, Any
-from openai import AsyncOpenAI
+from langchain_openai import ChatOpenAI
+from langchain.schema import SystemMessage, HumanMessage
 
-client = AsyncOpenAI(
+# Kimi 2.5 via Moonshot AI using LangChain
+llm = ChatOpenAI(
+    model="kimi-k2.5",
     api_key=os.getenv("MOONSHOT_API_KEY"),
-    base_url="https://api.moonshot.cn/v1"
+    base_url="https://api.moonshot.cn/v1",
+    temperature=0.3
 )
-
-MODEL = "kimi-k2.5"
 
 class AssessorAgent:
     """Agent 4: Assess 12D Matrix scores with confidence intervals"""
@@ -89,16 +91,11 @@ Provide positioning (0-100) untuk setiap dimension dengan confidence interval.
 """
         
         try:
-            response = await client.chat.completions.create(
-                model=MODEL,
-                messages=[
-                    {"role": "system", "content": self.SYSTEM_PROMPT},
-                    {"role": "user", "content": prompt}
-                ],
-                response_format={"type": "json_object"},
-                temperature=0.3
-            )
-            result = json.loads(response.choices[0].message.content)
+            response = await llm.ainvoke([
+                SystemMessage(content=self.SYSTEM_PROMPT),
+                HumanMessage(content=prompt)
+            ])
+            result = json.loads(response.content)
             return result.get("scores", self._default_scores())
         except Exception as e:
             print(f"12D assessment error: {e}")
@@ -115,16 +112,11 @@ Provide positioning (0-100) untuk setiap dimension dengan confidence interval.
         prompt = dim_prompts.get(dimension, f"Assess {dimension} positioning (0-100)")
         
         try:
-            response = await client.chat.completions.create(
-                model=MODEL,
-                messages=[
-                    {"role": "system", "content": self.SYSTEM_PROMPT},
-                    {"role": "user", "content": f"{prompt}\n\nEvidence: {json.dumps(evidence)}"}
-                ],
-                response_format={"type": "json_object"},
-                temperature=0.3
-            )
-            result = json.loads(response.choices[0].message.content)
+            response = await llm.ainvoke([
+                SystemMessage(content=self.SYSTEM_PROMPT),
+                HumanMessage(content=f"{prompt}\n\nEvidence: {json.dumps(evidence)}")
+            ])
+            result = json.loads(response.content)
             return result
         except Exception as e:
             print(f"Dimension assessment error: {e}")
