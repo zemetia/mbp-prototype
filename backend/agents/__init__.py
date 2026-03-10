@@ -1,14 +1,3 @@
-# Agent package initialization
-from .analyzer import AnalyzerAgent
-from .hypothesis_maker import HypothesisMakerAgent
-from .question_maker import QuestionMakerAgent
-from .assessor import AssessorAgent
-from .synthesizer import SynthesizerAgent
+from agents.base import MBPAgent, AgentResult
 
-__all__ = [
-    "AnalyzerAgent",
-    "HypothesisMakerAgent",
-    "QuestionMakerAgent",
-    "AssessorAgent",
-    "SynthesizerAgent"
-]
+__all__ = ["MBPAgent", "AgentResult"]

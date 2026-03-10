@@ -66,70 +66,76 @@ export function PersonalDataForm() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      <header className="bg-white border-b border-slate-200">
-        <div className="max-w-2xl mx-auto px-4 py-4">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 relative overflow-hidden">
+      {/* Background decoration elements */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-100 blur-3xl opacity-50 mix-blend-multiply transition-all duration-1000 ease-in-out"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-purple-100 blur-3xl opacity-50 mix-blend-multiply transition-all duration-1000 ease-in-out"></div>
+      </div>
+
+      <header className="bg-white/80 backdrop-blur-md border-b border-indigo-100 sticky top-0 z-10">
+        <div className="max-w-2xl mx-auto px-4 py-4 md:py-5">
           <button
             onClick={() => navigate('/')}
-            className="flex items-center gap-2 text-slate-600 hover:text-slate-900 transition"
+            className="flex items-center gap-2 px-3 py-2 text-indigo-600 hover:bg-indigo-50 hover:text-indigo-900 rounded-lg transition-all duration-200 group"
           >
-            <ArrowLeft className="w-5 h-5" />
-            Kembali
+            <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+            <span className="font-medium">Kembali</span>
           </button>
         </div>
       </header>
 
-      <main className="max-w-2xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
-          <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <User className="w-8 h-8 text-slate-600" />
+      <main className="max-w-2xl mx-auto px-4 py-10 md:py-16 relative z-10">
+        <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white p-8 md:p-10 transition-all duration-300 hover:shadow-[0_8px_40px_rgb(0,0,0,0.08)]">
+          <div className="text-center mb-10">
+            <div className="w-20 h-20 bg-gradient-to-tr from-indigo-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-6 transform rotate-3 transition-transform hover:rotate-6">
+              <User className="w-10 h-10 text-indigo-600" />
             </div>
-            <h1 className="text-2xl font-bold text-slate-900 mb-2">
+            <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-900 to-purple-900 mb-3 tracking-tight">
               Data Pribadi
             </h1>
-            <p className="text-slate-600">
-              Masukkan informasi dasar untuk memulai analisis
+            <p className="text-slate-500 text-lg">
+              Masukkan informasi dasar untuk memulai analisis mendalam Anda
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label htmlFor="nama" className="block text-sm font-medium text-slate-700 mb-2">
-                Nama
+            <div className="space-y-1">
+              <label htmlFor="nama" className="block text-sm font-semibold text-slate-700 ml-1">
+                Nama Lengkap
               </label>
               <input
                 type="text"
                 id="nama"
                 value={formData.nama}
                 onChange={(e) => handleChange('nama', e.target.value)}
-                className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:outline-none focus:border-slate-500 transition"
-                placeholder="Masukkan nama lengkap"
+                className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all text-slate-800 placeholder:text-slate-400 font-medium"
+                placeholder="Misal: Budi Santoso"
               />
               {errors.nama && (
-                <p className="mt-1 text-sm text-red-600">{errors.nama}</p>
+                <p className="mt-2 text-sm text-red-500 font-medium ml-1 animate-pulse">{errors.nama}</p>
               )}
             </div>
 
-            <div>
-              <label htmlFor="tanggal_lahir" className="block text-sm font-medium text-slate-700 mb-2">
-                Tanggal Lahir
+            <div className="space-y-1">
+              <label htmlFor="tanggal_lahir" className="block text-sm font-semibold text-slate-700 ml-1">
+                Tanggal Lahir (DD/MM/YYYY)
               </label>
               <input
                 type="text"
                 id="tanggal_lahir"
                 value={formData.tanggal_lahir}
                 onChange={(e) => handleChange('tanggal_lahir', e.target.value)}
-                className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:outline-none focus:border-slate-500 transition"
-                placeholder="DD/MM/YYYY"
+                className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all text-slate-800 placeholder:text-slate-400 font-medium"
+                placeholder="Misal: 15/08/1995"
               />
               {errors.tanggal_lahir && (
-                <p className="mt-1 text-sm text-red-600">{errors.tanggal_lahir}</p>
+                <p className="mt-2 text-sm text-red-500 font-medium ml-1 animate-pulse">{errors.tanggal_lahir}</p>
               )}
             </div>
 
-            <div>
-              <label htmlFor="tempat_lahir" className="block text-sm font-medium text-slate-700 mb-2">
+            <div className="space-y-1">
+              <label htmlFor="tempat_lahir" className="block text-sm font-semibold text-slate-700 ml-1">
                 Tempat Lahir
               </label>
               <input
@@ -137,57 +143,58 @@ export function PersonalDataForm() {
                 id="tempat_lahir"
                 value={formData.tempat_lahir}
                 onChange={(e) => handleChange('tempat_lahir', e.target.value)}
-                className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:outline-none focus:border-slate-500 transition"
-                placeholder="Masukkan tempat lahir"
+                className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all text-slate-800 placeholder:text-slate-400 font-medium"
+                placeholder="Misal: Jakarta"
               />
               {errors.tempat_lahir && (
-                <p className="mt-1 text-sm text-red-600">{errors.tempat_lahir}</p>
+                <p className="mt-2 text-sm text-red-500 font-medium ml-1 animate-pulse">{errors.tempat_lahir}</p>
               )}
             </div>
 
-            <div>
-              <label htmlFor="agama" className="block text-sm font-medium text-slate-700 mb-2">
-                Agama
+            <div className="space-y-1">
+              <label htmlFor="agama" className="block text-sm font-semibold text-slate-700 ml-1">
+                Agama / Kepercayaan
               </label>
               <input
                 type="text"
                 id="agama"
                 value={formData.agama}
                 onChange={(e) => handleChange('agama', e.target.value)}
-                className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:outline-none focus:border-slate-500 transition"
-                placeholder="Masukkan agama"
+                className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all text-slate-800 placeholder:text-slate-400 font-medium"
+                placeholder="Sebutkan agama atau kepercayaan"
               />
               {errors.agama && (
-                <p className="mt-1 text-sm text-red-600">{errors.agama}</p>
+                <p className="mt-2 text-sm text-red-500 font-medium ml-1 animate-pulse">{errors.agama}</p>
               )}
             </div>
 
             {errors.submit && (
-              <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
-                <p className="text-sm text-red-600">{errors.submit}</p>
+              <div className="p-4 bg-red-50/80 backdrop-blur-sm border border-red-200 rounded-2xl flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-red-500 animate-ping"></div>
+                <p className="text-sm text-red-600 font-medium">{errors.submit}</p>
               </div>
             )}
 
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-4 bg-slate-900 text-white rounded-xl font-medium hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center justify-center gap-2"
+              className="w-full py-4 mt-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-2xl font-bold text-lg shadow-lg shadow-indigo-500/30 transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3"
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Memulai...
+                  <Loader2 className="w-6 h-6 animate-spin" />
+                  Memproses Data...
                 </>
               ) : (
-                'Lanjutkan'
+                'Mulai Analisis'
               )}
             </button>
           </form>
 
-          <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-xl">
-            <p className="text-sm text-amber-800">
-              <strong>Privasi:</strong> Data pribadi Anda digunakan hanya untuk konteks analisis. 
-              Informasi ini tidak dibagikan ke pihak ketiga.
+          <div className="mt-8 p-5 bg-indigo-50/50 border border-indigo-100/50 rounded-2xl text-center">
+            <p className="text-sm text-indigo-800/80 leading-relaxed font-medium">
+              Data pribadi Anda diproses secara khusus untuk personalisasi hasil analisis. 
+              <br className="hidden sm:block"/> Kami menjaga tingkat keamanan privasi tertinggi.
             </p>
           </div>
         </div>
