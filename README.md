@@ -1,136 +1,72 @@
-# MirrorBreak Protocol Prototype
+# MirrorBreak Protocol (MBP) Prototype
 
-Prototype implementation of MBP with AI agents (Kimi 2.5) for structural profiling.
-
-## Features
-
-- **Anonymous Sessions**: No login required, UUID-based session tracking
-- **6-Phase Workflow**: Safety → Core → Adaptive → Mining → Validation → Synthesis → Debrief
-- **5 AI Agents**: Analyzer, HypothesisMaker, QuestionMaker, Assessor, Synthesizer
-- **Real-time WebSocket**: Live chat interface with Kimi 2.5
-- **SQLite Storage**: Persistent session data, messages, hypotheses, 12D scores
-- **Profile Viewer**: Downloadable structural profile with confidence intervals
+FastAPI-based implementation of the MirrorBreak Protocol — a qualitative structural analysis framework for understanding human behavioral patterns.
 
 ## Quick Start
 
-### 1. Setup Backend
-
 ```bash
-cd backend
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+# 1. Start infrastructure
+docker-compose up -d db redis
+
+# 2. Install dependencies
 pip install -r requirements.txt
 
-# Set environment variable
-export MOONSHOT_API_KEY="your-api-key"
+# 3. Run migrations
+alembic upgrade head
 
-# Run server
-python main.py
+# 4. Start server
+uvicorn app.main:app --reload
 ```
-
-Backend runs on `http://localhost:8000`
-
-### 2. Setup Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Frontend runs on `http://localhost:5173`
-
-### 3. Access
-
-Open browser to `http://localhost:5173` and start assessment.
 
 ## API Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/sessions` | Create new session |
-| GET | `/api/sessions/{id}` | Get session status |
-| GET | `/api/sessions/{id}/history` | Get conversation history |
-| GET | `/api/sessions/{id}/profile` | Get final profile |
-| WS | `/ws/{id}` | WebSocket for real-time assessment |
+- `POST /sessions` — Create new assessment session
+- `POST /sessions/{id}/responses` — Submit user response
+- `GET /sessions/{id}/next-question` — Get next probe question
+- `GET /sessions/{id}/profile` — Get final structural profile
+- `GET /health` — Health check
 
-## Data Model
-
-### Sessions Table
-- `id`: UUID (8 chars)
-- `phase`: Current phase (0-6)
-- `status`: active/completed
-- `safety_cleared`: Boolean
-- `final_profile`: JSON
-- `confidence_scores`: JSON
-
-### Messages Table
-- `session_id`: FK
-- `role`: user/assistant/system
-- `content`: Text
-- `phase`: Phase number
-- `metadata`: JSON (context, tension targets)
-
-### Hypotheses Table
-- `session_id`: FK
-- `field`: Field name
-- `hypothesis_text`: Description
-- `confidence`: 0.0-1.0
-- `evidence`: JSON array
-- `status`: active/rejected
-
-### Matrix Scores Table
-- `session_id`: FK
-- `dimension`: 12D dimension
-- `score`: 0-100
-- `confidence`: 0-100
-- `evidence`: JSON
-
-## Agent Architecture
+## Architecture
 
 ```
-User Input
-    ↓
-[Analyzer] → Safety check / Pattern detection
-    ↓
-[HypothesisMaker] → Generate competing hypotheses
-    ↓
-[QuestionMaker] → Generate adaptive question
-    ↓
-User Response
-    ↓
-... (iterate Phase 2-3)
-    ↓
-[Assessor] → 12D Matrix scoring
-    ↓
-[Synthesizer] → Final profile
+Client → API → Session Manager → Agent Pipeline → Database
+                    ↓
+            ┌───────┴───────┐
+            ▼               ▼
+      Analyzer      HypothesisMaker
+            ↓               ↓
+      HypothesisRefiner ←──┘
+            ↓
+      QuestionMaker (loop until confidence ≥ 0.7)
+            ↓
+      Assessor (12D Matrix)
+            ↓
+      Synthesizer (Final Profile)
 ```
 
 ## Environment Variables
 
 ```bash
-# Required
-MOONSHOT_API_KEY=your-moonshot-api-key
-
-# Optional
-API_HOST=0.0.0.0
-API_PORT=8000
-DB_PATH=mbp_sessions.db
+DATABASE_URL=postgresql+asyncpg://mbp:mbp@localhost:5432/mbp
+REDIS_URL=redis://localhost:6379/0
+OPENAI_API_KEY=sk-...
+ANTHROPIC_API_KEY=sk-ant-...
 ```
 
-## Docker Deployment
+## Project Structure
 
-```bash
-docker-compose up -d
+```
+app/
+├── __init__.py
+├── main.py              # FastAPI app entry
+├── config.py            # Settings
+├── models/              # SQLAlchemy models
+├── schemas/             # Pydantic schemas
+├── agents/              # 6 MBP agents
+├── services/            # Business logic
+└── core/                # Utilities
 ```
 
-## Safety Considerations
+## Status
 
-- Phase 0: Hard stop for active suicidality, psychosis
-- Phase 3: Focus on patterns, not trauma details
-- Phase 6: Debriefing with grounding and resources
-- All profiles include disclaimer: not clinical diagnosis
-
-## License
-
-MIT — For research and personal use only.
+Prototype phase — Foundation scaffolded. Agents implemented incrementally.

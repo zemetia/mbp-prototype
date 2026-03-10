@@ -1,20 +1,47 @@
 version: '3.8'
 
 services:
-  backend:
-    build: ./backend
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: mbp
+      POSTGRES_PASSWORD: mbp
+      POSTGRES_DB: mbp
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mbp"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  api:
+    build: .
     ports:
       - "8000:8000"
     environment:
-      - MOONSHOT_API_KEY=${MOONSHOT_API_KEY}
-    volumes:
-      - ./data:/app/data
-    restart: unless-stopped
-
-  frontend:
-    build: ./frontend
-    ports:
-      - "5173:80"
+      - DATABASE_URL=postgresql+asyncpg://mbp:mbp@db:5432/mbp
+      - REDIS_URL=redis://redis:6379/0
+    env_file:
+      - .env
     depends_on:
-      - backend
-    restart: unless-stopped
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    volumes:
+      - ./app:/app/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+volumes:
+  postgres_data:
+  redis_data:

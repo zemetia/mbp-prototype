@@ -1,10 +1,10 @@
-import { Brain, Shield, Search, Pickaxe, GitCompare, FileText, CheckCircle } from 'lucide-react'
+import { Brain, Shield, Search, Hammer, GitCompare, FileText, CheckCircle } from 'lucide-react'
 
 const phases = [
   { num: 0, name: 'Safety', icon: Shield, desc: 'Pre-screening' },
   { num: 1, name: 'Core', icon: Brain, desc: 'Tension generators' },
   { num: 2, name: 'Adaptive', icon: Search, desc: 'Hypothesis testing' },
-  { num: 3, name: 'Mining', icon: Pickaxe, desc: 'Pattern exploration' },
+  { num: 3, name: 'Mining', icon: Hammer, desc: 'Pattern exploration' },
   { num: 4, name: 'Validation', icon: GitCompare, desc: 'Cross-dimension test' },
   { num: 5, name: 'Synthesis', icon: FileText, desc: 'Profile generation' },
   { num: 6, name: 'Debrief', icon: CheckCircle, desc: 'Closure' },

@@ -1,0 +1,159 @@
+{
+  "timestamp": "2026-03-07T19:47:58.440160",
+  "summary": {
+    "total": 21,
+    "passed": 20,
+    "failed": 1,
+    "success_rate": "95.2%"
+  },
+  "results": [
+    {
+      "name": "GET /health",
+      "status": "PASS",
+      "details": "Status: healthy, Version: 2.0.0",
+      "error": null,
+      "timestamp": "2026-03-07T19:47:57.741454"
+    },
+    {
+      "name": "GET /api/health",
+      "status": "PASS",
+      "details": "Status: healthy, Agents: 22",
+      "error": null,
+      "timestamp": "2026-03-07T19:47:57.743675"
+    },
+    {
+      "name": "POST /api/personal-data",
+      "status": "PASS",
+      "details": "ID: 72bb81b9-3096-4030-ad0c-ce3080913713",
+      "error": null,
+      "timestamp": "2026-03-07T19:47:57.746129"
+    },
+    {
+      "name": "GET /api/personal-data/{id}",
+      "status": "PASS",
+      "details": "Name: Budi Santoso",
+      "error": null,
+      "timestamp": "2026-03-07T19:47:57.748250"
+    },
+    {
+      "name": "GET /api/personal-data/{invalid-id}",
+      "status": "PASS",
+      "details": "Correctly returns 404",
+      "error": null,
+      "timestamp": "2026-03-07T19:47:57.749565"
+    },
+    {
+      "name": "POST /api/sessions",
+      "status": "PASS",
+      "details": "ID: 0a675830...",
+      "error": null,
+      "timestamp": "2026-03-07T19:47:57.752104"
+    },
+    {
+      "name": "POST /api/sessions/with-personal-data",
+      "status": "PASS",
+      "details": "ID: d1f7c51e...",
+      "error": null,
+      "timestamp": "2026-03-07T19:47:57.754549"
+    },
+    {
+      "name": "POST /api/sessions/with-personal-data (invalid)",
+      "status": "PASS",
+      "details": "Correctly returns 404",
+      "error": null,
+      "timestamp": "2026-03-07T19:47:57.755763"
+    },
+    {
+      "name": "GET /api/sessions/{id}",
+      "status": "PASS",
+      "details": "Phase: intake",
+      "error": null,
+      "timestamp": "2026-03-07T19:47:57.757932"
+    },
+    {
+      "name": "GET /api/sessions/{invalid-id}",
+      "status": "PASS",
+      "details": "Correctly returns 404",
+      "error": null,
+      "timestamp": "2026-03-07T19:47:57.759076"
+    },
+    {
+      "name": "POST /api/sessions/{id}/respond",
+      "status": "FAIL",
+      "details": "Status: 500, Body: {\"detail\":\"Processing error: <Phase.INTAKE: 'intake'> is not a valid Phase\"}",
+      "error": null,
+      "timestamp": "2026-03-07T19:47:58.421182"
+    },
+    {
+      "name": "GET /api/sessions/{id}/profile (incomplete)",
+      "status": "PASS",
+      "details": "Correctly returns 400 for incomplete session",
+      "error": null,
+      "timestamp": "2026-03-07T19:47:58.423622"
+    },
+    {
+      "name": "POST /api/analyses",
+      "status": "PASS",
+      "details": "ID: 9a378436...",
+      "error": null,
+      "timestamp": "2026-03-07T19:47:58.425865"
+    },
+    {
+      "name": "POST /api/analyses (invalid personal_data)",
+      "status": "PASS",
+      "details": "Correctly returns 404",
+      "error": null,
+      "timestamp": "2026-03-07T19:47:58.427009"
+    },
+    {
+      "name": "POST /api/analyses (invalid session)",
+      "status": "PASS",
+      "details": "Correctly returns 404",
+      "error": null,
+      "timestamp": "2026-03-07T19:47:58.428121"
+    },
+    {
+      "name": "GET /api/analyses",
+      "status": "PASS",
+      "details": "Total analyses: 1",
+      "error": null,
+      "timestamp": "2026-03-07T19:47:58.430283"
+    },
+    {
+      "name": "GET /api/analyses?personal_data_id=...",
+      "status": "PASS",
+      "details": "Filtered count: 1",
+      "error": null,
+      "timestamp": "2026-03-07T19:47:58.431623"
+    },
+    {
+      "name": "GET /api/analyses/{id}",
+      "status": "PASS",
+      "details": "Name: Budi Santoso",
+      "error": null,
+      "timestamp": "2026-03-07T19:47:58.434641"
+    },
+    {
+      "name": "GET /api/analyses/{invalid-id}",
+      "status": "PASS",
+      "details": "Correctly returns 404",
+      "error": null,
+      "timestamp": "2026-03-07T19:47:58.435995"
+    },
+    {
+      "name": "Validation: Empty message",
+      "status": "PASS",
+      "details": "Correctly returns 422",
+      "error": null,
+      "timestamp": "2026-03-07T19:47:58.438942"
+    },
+    {
+      "name": "Validation: Missing fields",
+      "status": "PASS",
+      "details": "Correctly returns 422 for missing fields",
+      "error": null,
+      "timestamp": "2026-03-07T19:47:58.440109"
+    }
+  ],
+  "errors": []
+}

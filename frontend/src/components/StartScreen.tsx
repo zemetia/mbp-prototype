@@ -1,4 +1,4 @@
-import { Mirror } from 'lucide-react'
+import { Sparkles } from 'lucide-react'
 
 interface StartScreenProps {
   onStart: () => void
@@ -10,7 +10,7 @@ export function StartScreen({ onStart }: StartScreenProps) {
       <div className="max-w-2xl w-full text-center">
         <div className="mb-8">
           <div className="w-20 h-20 bg-slate-900 rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <Mirror className="w-10 h-10 text-white" />
+            <Sparkles className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-4xl font-bold text-slate-900 mb-4">
             MirrorBreak Protocol
